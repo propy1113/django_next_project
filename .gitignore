@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
+db.sqlite3
+
+# Docker stuff:
+*.env
+.env
+
+# Environment variables:
+.env
+*.env
+
+# Virtualenv
+venv/
+ENV/
+env/
+.venv/
+
+# Node.js
+node_modules/
+.next/
+out/
+
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
