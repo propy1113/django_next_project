@@ -1,0 +1,22 @@
+.
+├── README.md
+├── backend
+│   ├── Dockerfile
+│   ├── django_project
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── manage.py
+│   └── requirements.txt
+├── docker-compose.yml
+├── frontend
+│   ├── Dockerfile
+│   ├── package-lock.json
+│   ├── package.json
+│   └── pages
+│       └── index.js
+└── project001_tree.txt
+
+5 directories, 15 files

@@ -8,6 +8,9 @@ WORKDIR /usr/src/app/
 COPY package*.json ./
 RUN npm install
 
+# axiosをインストール
+RUN npm install axios
+
 # アプリケーションコードをコピー
 COPY . .
 
