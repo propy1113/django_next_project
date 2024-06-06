@@ -53,7 +53,12 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+# CORS_ALLOW_ALL_ORIGINS = True  # すべてのオリジンからのリクエストを許可
+# CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'django_project.urls'
 

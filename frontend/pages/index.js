@@ -21,7 +21,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8000/api/notes/', formData);
+      await axios.post('http://0.0.0.0:8000/api/notes/', formData);
       alert('データが送信されました！');
     } catch (error) {
       console.error(error);
