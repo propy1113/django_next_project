@@ -1,6 +1,7 @@
 kishiブランチのコミットとリモートブランチへのプッシュテスト
 
 Djangoの管理画面のユーザ情報
+python manage.py createsuperuserでユーザを作成する。
 ユーザ名：admin
 パスワード：admin
 
