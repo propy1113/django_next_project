@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
 
-export default function Home() {
+export default function Signup() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+    email: ''
   });
 
   const handleChange = (e) => {
@@ -19,18 +19,18 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://0.0.0.0:8000/api/login/', formData);
-      alert('ログイン成功！');
-      // ここでログイン後の処理を追加します
+      const response = await axios.post('http://0.0.0.0:8000/api/register/', formData);
+      alert('アカウント作成成功！');
+      // アカウント作成後の処理をここに追加します
     } catch (error) {
       console.error(error);
-      alert('ログインに失敗しました。');
+      alert('アカウント作成に失敗しました。');
     }
   };
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold">ログイン</h1>
+      <h1 className="text-2xl font-bold">アカウント作成</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <div>
           <label className="block">ユーザー名</label>
@@ -54,13 +54,21 @@ export default function Home() {
             required
           />
         </div>
+        <div>
+          <label className="block">メールアドレス</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="border p-2"
+            required
+          />
+        </div>
         <button type="submit" className="bg-blue-500 text-white p-2">
-          ログイン
+          アカウント作成
         </button>
       </form>
-      <Link href="/signup">
-        アカウント作成
-      </Link>
     </div>
   );
 }

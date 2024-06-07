@@ -16,3 +16,4 @@ EXPOSE 8000
 
 # コマンドを実行
 CMD ["sh", "-c", "django-admin startproject django_project"]
+#CMD ["sh", "-c", "django-admin startproject django_project && python manage.py startapp accounts && python manage.py startapp notes"]
