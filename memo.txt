@@ -1,10 +1,8 @@
 プロジェクトのディレクトリ構造を表示するコマンド
-```
 tree -I '.git|node_modules'
-```
 
 Djangoの管理画面のユーザ情報
-`python manage.py createsuperuser`でユーザを作成する。
+python manage.py createsuperuserでユーザを作成する。
 ユーザ名：admin
 パスワード：admin
 
@@ -16,16 +14,15 @@ backend:
     python manage.py migrate
 
 frontend:
-    `npx -y create-next-app next_app    #コマンド実行時に色々聞かれるため、DockerfileのCMDで自動で立ち上がらなかった（TypeScriptのインストールなど...）`
-    `#npm install axios`
-    `npm install -D tailwindcss`
-    `npx tailwindcss init -p`
+    npx -y create-next-app next_app    #コマンド実行時に色々聞かれるため、DockerfileのCMDで自動で立ち上がらなかった（TypeScriptのインストールなど...）
+    #npm install axios
+    npm install -D tailwindcss
+    npx tailwindcss init -p
 
 
 
 
 settigns.pyの設定
-    ```
     ALLOWED_HOSTS = [0.0.0.0]
     INSTALLED_APPLS = [
         ... ,
@@ -40,54 +37,52 @@ settigns.pyの設定
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",    #フロントからバックへPOSTリクエスト送信時にセキュリティ関係のエラーがでるのを解決するために必要（Djangoの仕様らしい）
     ]
-    ```
 
 
 
 tailwindcssの設定
 
-    `mkdir styles`
+    mkdir styles
     styles に globals.css を作成
     globals.cssの設定
-        ```
+    
         @tailwind base;
         @tailwind components;
         @tailwind utilities;
-        ```
+
 
     pages に _app.js を作成
     _app.jsの設定
-        ```
+
         import '../styles/globals.css'
         function MyApp({ Component, pageProps }) {
           return <Component {...pageProps} />
         }
         export default MyApp
-        ```
+
 
     ./に next.config.js を作成
     next.config.jsの設定
-        ```
+
         // next.config.js
         module.exports = {
             // ...
             cssModules: true,
             // ...
         };
-        ```
 
     ./postcss.config.jsの設定
-        ```
+
         module.exports = {
           plugins: {
             tailwindcss: {},
             autoprefixer: {},
           },
         }
-        ```
+
 
     ./tailwind.config.jsの設定
-        ```
+
         /** @type {import('tailwindcss').Config} */
         module.exports = {
           content: [
@@ -99,4 +94,9 @@ tailwindcssの設定
           },
           plugins: [],
         }
-        ```
+
+
+
+
+
+
