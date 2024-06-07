@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -7,6 +8,7 @@ export default function Home() {
     username: '',
     password: '',
   });
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +22,9 @@ export default function Home() {
     e.preventDefault();
     try {
       const response = await axios.post('http://0.0.0.0:8000/api/login/', formData);
-      alert('ログイン成功！');
-      // ここでログイン後の処理を追加します
+      localStorage.setItem('token', response.data.token);
+      // alert('ログイン成功！');
+      router.push('/dashboard');
     } catch (error) {
       console.error(error);
       alert('ログインに失敗しました。');
