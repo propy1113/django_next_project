@@ -11,18 +11,29 @@ Djangoの管理画面のユーザ情報
 ## プロジェクトを立ち上げてから使用したコマンド
 
 backend:
+    ```
     python manage.py startapp notes
+    ```
+    ```
     python manage.py makemigrations
+    ```
+    ```
     python manage.py migrate
+    ```
 
 frontend:
-    `npx -y create-next-app next_app    #コマンド実行時に色々聞かれるため、DockerfileのCMDで自動で立ち上がらなかった（TypeScriptのインストールなど...）`
-    `#npm install axios`
-    `npm install -D tailwindcss`
-    `npx tailwindcss init -p`
-
-
-
+    ```
+    npx -y create-next-app next_app    #コマンド実行時に色々聞かれるため、DockerfileのCMDで自動で立ち上がらなかった（TypeScriptのインストールなど...）
+    ```
+    ```
+    #npm install axios
+    ```
+    ```
+    npm install -D tailwindcss
+    ```
+    ```
+    npx tailwindcss init -p
+    ```
 
 settigns.pyの設定
     ```
