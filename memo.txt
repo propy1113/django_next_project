@@ -1,5 +1,7 @@
 プロジェクトのディレクトリ構造を表示するコマンド
+```
 tree -I '.git|node_modules'
+```
 
 Djangoの管理画面のユーザ情報
 python manage.py createsuperuserでユーザを作成する。
@@ -94,9 +96,3 @@ tailwindcssの設定
           },
           plugins: [],
         }
-
-
-
-
-
-
