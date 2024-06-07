@@ -1,6 +1,6 @@
 プロジェクトのディレクトリ構造を表示するコマンド
 ```
-tree -I '.git|node_modules'
+tree -I '.git|node_modules|__pycache__|migrations|tree|memo.*' > ./tree/project001_$(date "+%Y%m%d-%H-%M-%S")_tree.txt
 ```
 
 Djangoの管理画面のユーザ情報
