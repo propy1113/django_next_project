@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import '../styles/globals.css'
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token && router.pathname !== '/') {
+    const isAuthPage = Component.requiresAuth;
+
+    if (!token && isAuthPage) {
       router.push('/');
     }
-  }, [router]);
+  }, [router, Component]);
 
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
 }
 
-export default MyApp
+export default MyApp;

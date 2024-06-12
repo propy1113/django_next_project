@@ -39,4 +39,7 @@ const Dashboard = () => {
   );
 };
 
+// ダッシュボードページは認証が必要
+Dashboard.requiresAuth = true;
+
 export default Dashboard;

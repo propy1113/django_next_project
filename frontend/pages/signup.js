@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ export default function Signup() {
     password: '',
     email: ''
   });
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,12 +21,19 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://0.0.0.0:8000/api/register/', formData);
-      alert('アカウント作成成功！');
-      // アカウント作成後の処理をここに追加します
+      // アカウント作成
+      await axios.post('http://0.0.0.0:8000/api/register/', formData);
+      // アカウント作成成功後にログイン
+      const response = await axios.post('http://0.0.0.0:8000/api/login/', {
+        username: formData.username,
+        password: formData.password,
+      });
+      localStorage.setItem('token', response.data.token);
+      alert('アカウント作成成功！ログインしました。');
+      router.push('/dashboard');
     } catch (error) {
       console.error(error);
-      alert('アカウント作成に失敗しました。');
+      alert('アカウント作成またはログインに失敗しました。');
     }
   };
 
