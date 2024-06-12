@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics #type: ignore
 from .models import Note
 from .serializers import NoteSerializer
 

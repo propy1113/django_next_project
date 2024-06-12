@@ -37,3 +37,6 @@ out/
 # Windows
 Thumbs.db
 ehthumbs.db
+
+#VSCode
+.vscode

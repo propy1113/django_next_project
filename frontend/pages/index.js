@@ -1,101 +1,87 @@
+// ReactのuseStateフックをインポート
 import { useState } from 'react';
+// Next.jsのuseRouterフックをインポート
+import { useRouter } from 'next/router';
+// HTTPリクエスト用のaxiosをインポート
 import axios from 'axios';
+// Next.jsのLinkコンポーネントをインポート
+import Link from 'next/link';
 
+// Homeコンポーネントを定義
 export default function Home() {
+  // フォームの状態を管理
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    note: '',
+    username: '',  // ユーザー名フィールド
+    password: '',  // パスワードフィールド
   });
+  const router = useRouter();  // ルーターを初期化
 
+  // フォーム入力の変更をハンドル
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    const { name, value } = e.target;  // イベントから名前と値を取得
+    // 状態を更新
+    setFormData({
+      ...formData,  // 以前のデータを保持
+      [name]: value,  // 新しいデータを更新
+    });
   };
 
+  // フォーム送信の処理
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();  // デフォルトの送信動作を無効
     try {
-      await axios.post('http://0.0.0.0:8000/api/notes/', formData);
-      alert('データが送信されました！');
+      // サーバーにログインデータを送信
+      const response = await axios.post('http://0.0.0.0:8000/api/login/', formData);
+      localStorage.setItem('token', response.data.token);  // トークンを保存
+      router.push('/dashboard');  // ダッシュボードへ移動
     } catch (error) {
-      console.error(error);
-      alert('送信中にエラーが発生しました。');
+      console.error(error);  // エラーをコンソールに表示
+      alert('ログインに失敗しました。');  // エラー通知
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-purple-600">
-      <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-lg">
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">フォーム入力画面</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">名前</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">メール</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">電話番号</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">住所</label>
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">ノート</label>
-            <textarea
-              name="note"
-              value={formData.note}
-              onChange={handleChange}
-              required
-              className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-pink-500 text-white py-3 rounded-lg shadow-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-          >
-            送信
-          </button>
-        </form>
-      </div>
+    // コンテナのスタイル設定
+    <div className="container mx-auto">
+      {/* タイトル表示 */}
+      <h1 className="text-2xl font-bold">ログイン</h1>
+      {/* フォームの開始 */}
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <div>
+          {/* ユーザー名のラベル */}
+          <label className="block">ユーザー名</label>
+          {/* ユーザー名の入力フィールド */}
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className="border p-2"
+            required  // 必須フィールド
+          />
+        </div>
+        <div>
+          {/* パスワードのラベル */}
+          <label className="block">パスワード</label>
+          {/* パスワードの入力フィールド */}
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="border p-2"
+            required  // 必須フィールド
+          />
+        </div>
+        {/* ログインボタン */}
+        <button type="submit" className="bg-blue-500 text-white p-2">
+          ログイン
+        </button>
+      </form>
+      {/* アカウント作成へのリンク */}
+      <Link href="/signup">
+        アカウント作成
+      </Link>
     </div>
   );
 }
