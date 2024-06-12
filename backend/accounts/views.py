@@ -6,6 +6,7 @@ from django.contrib.auth import login    #type: ignore
 from rest_framework.response import Response    #type: ignore
 from django.contrib.auth.models import User  #type: ignore
 from rest_framework.serializers import ModelSerializer  #type: ignore
+from rest_framework.views import APIView    #type: ignore
 
 class LoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
@@ -41,4 +42,14 @@ class RegisterView(generics.CreateAPIView):
                 "username": user.username,
                 "email": user.email
             }
+        })
+
+class UserDetailAPI(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return Response({
+            "username": user.username,
+            "email": user.email,
         })

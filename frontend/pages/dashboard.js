@@ -1,8 +1,28 @@
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
 const Dashboard = () => {
+  const [username, setUsername] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://0.0.0.0:8000/api/user/', {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error('ユーザー情報の取得に失敗しました:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -32,7 +52,7 @@ const Dashboard = () => {
         </button>
       </header>
       <main>
-        <h2>ようこそ、ユーザー専用のホーム画面へ！</h2>
+        <h2>ようこそ、{username}さん</h2>
         {/* 他のコンテンツをここに追加 */}
       </main>
     </div>
