@@ -98,4 +98,4 @@ module.exports = {
 
 
 # その他メモ
-loginブランチ作成&コミットプッシュ
+loggingブランチ作成&コミットプッシュ
