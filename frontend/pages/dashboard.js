@@ -38,7 +38,6 @@ const Dashboard = () => {
       return response.data;
     } catch (error) {
       handleError(error);
-      throw error;
     }
   };
 
@@ -55,7 +54,6 @@ const Dashboard = () => {
       return response.data;
     } catch (error) {
       handleError(error);
-      throw error;
     }
   };
 
@@ -71,7 +69,6 @@ const Dashboard = () => {
       });
     } catch (error) {
       handleError(error);
-      throw error;
     }
   };
 
@@ -87,62 +84,40 @@ const Dashboard = () => {
       });
     } catch (error) {
       handleError(error);
-      throw error;
     }
   };
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const user = await fetchData('/user/');
-        setUsername(user.username);
-
-        const todos = await fetchData('/todos/');
-        setTodos(todos);
-      } catch (error) {
-        // エラーはすでにhandleErrorで処理されている
-      }
+      const user = await fetchData('/user/');
+      setUsername(user.username);
+  
+      const todos = await fetchData('/todos/');
+      setTodos(todos);
     };
-
     fetchUserData();
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await postData('/logout/', {});
-      localStorage.removeItem('token');
-      router.push('/');
-    } catch (error) {
-      // エラーはすでにhandleErrorで処理されている
-    }
+    await postData('/logout/', {});
+    localStorage.removeItem('token');
+    router.push('/');
   };
 
   const handleAddTodo = async () => {
     if (!newTodoTitle) return;
-    try {
-      const newTodo = await postData('/todos/', { title: newTodoTitle, text: '' });
-      setTodos([...todos, newTodo]);
-      setNewTodoTitle('');
-    } catch (error) {
-      // エラーはすでにhandleErrorで処理されている
-    }
+    const newTodo = await postData('/todos/', { title: newTodoTitle, text: '' });
+    setTodos([...todos, newTodo]);
+    setNewTodoTitle('');
   };
 
   const handleDeleteTodo = async (id) => {
-    try {
-      await deleteData(`/todos/${id}/`);
-      setTodos(todos.filter((todo) => todo.id !== id));
-    } catch (error) {
-      // エラーはすでにhandleErrorで処理されている
-    }
+    await deleteData(`/todos/${id}/`);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   const handleUpdateTodo = async (id, title, text) => {
-    try {
-      await patchData(`/todos/${id}/`, { title, text });
-    } catch (error) {
-      // エラーはすでにhandleErrorで処理されている
-    }
+    await patchData(`/todos/${id}/`, { title, text });
   };
 
   return (
