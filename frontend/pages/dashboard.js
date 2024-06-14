@@ -8,6 +8,11 @@ const Dashboard = () => {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const router = useRouter();
 
+  // 共通のAPIクライアントの作成
+  const apiClient = axios.create({
+    baseURL: 'http://0.0.0.0:8000/api',
+  });
+
   // 共通のエラーハンドリング関数
   const handleError = (error) => {
     if (error.response && error.response.status === 401) {
@@ -19,25 +24,83 @@ const Dashboard = () => {
     }
   };
 
+  // 共通のAPI呼び出し関数
+  const fetchData = async (url, options = {}) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await apiClient.get(url, {
+        ...options,
+        headers: {
+          Authorization: `Token ${token}`,
+          ...options.headers,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
+  const postData = async (url, data, options = {}) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await apiClient.post(url, data, {
+        ...options,
+        headers: {
+          Authorization: `Token ${token}`,
+          ...options.headers,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
+  const deleteData = async (url, options = {}) => {
+    try {
+      const token = localStorage.getItem('token');
+      await apiClient.delete(url, {
+        ...options,
+        headers: {
+          Authorization: `Token ${token}`,
+          ...options.headers,
+        },
+      });
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
+  const patchData = async (url, data, options = {}) => {
+    try {
+      const token = localStorage.getItem('token');
+      await apiClient.patch(url, data, {
+        ...options,
+        headers: {
+          Authorization: `Token ${token}`,
+          ...options.headers,
+        },
+      });
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const userResponse = await axios.get('http://0.0.0.0:8000/api/user/', {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        setUsername(userResponse.data.username);
+        const user = await fetchData('/user/');
+        setUsername(user.username);
 
-        const todosResponse = await axios.get('http://0.0.0.0:8000/api/todos/', {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        setTodos(todosResponse.data);
+        const todos = await fetchData('/todos/');
+        setTodos(todos);
       } catch (error) {
-        handleError(error);
+        // エラーはすでにhandleErrorで処理されている
       }
     };
 
@@ -46,71 +109,39 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        'http://0.0.0.0:8000/api/logout/',
-        {},
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
+      await postData('/logout/', {});
       localStorage.removeItem('token');
       router.push('/');
     } catch (error) {
-      handleError(error);
+      // エラーはすでにhandleErrorで処理されている
     }
   };
 
   const handleAddTodo = async () => {
     if (!newTodoTitle) return;
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'http://0.0.0.0:8000/api/todos/',
-        { title: newTodoTitle, text: '' },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
-      setTodos([...todos, response.data]);
+      const newTodo = await postData('/todos/', { title: newTodoTitle, text: '' });
+      setTodos([...todos, newTodo]);
       setNewTodoTitle('');
     } catch (error) {
-      handleError(error);
+      // エラーはすでにhandleErrorで処理されている
     }
   };
 
   const handleDeleteTodo = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://0.0.0.0:8000/api/todos/${id}/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      });
+      await deleteData(`/todos/${id}/`);
       setTodos(todos.filter((todo) => todo.id !== id));
     } catch (error) {
-      handleError(error);
+      // エラーはすでにhandleErrorで処理されている
     }
   };
 
   const handleUpdateTodo = async (id, title, text) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.patch(
-        `http://0.0.0.0:8000/api/todos/${id}/`,
-        { title, text },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
+      await patchData(`/todos/${id}/`, { title, text });
     } catch (error) {
-      handleError(error);
+      // エラーはすでにhandleErrorで処理されている
     }
   };
 
