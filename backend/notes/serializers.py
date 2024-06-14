@@ -1,7 +1,18 @@
 from rest_framework import serializers   #type: ignore
-from .models import Note
+# from .models import Note
+from .models import Todo
 
-class NoteSerializer(serializers.ModelSerializer):
+class TodoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Note
-        fields = ['id', 'name', 'email', 'phone', 'address', 'note']
+        model = Todo
+        fields = ['id', 'title', 'text', 'created_at', 'updated_at', 'deleted']
+
+
+
+
+
+
+# class NoteSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Note
+#         fields = ['id', 'name', 'email', 'phone', 'address', 'note']
