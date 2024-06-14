@@ -26,7 +26,13 @@ const Dashboard = () => {
         });
         setTodos(todosResponse.data);
       } catch (error) {
-        console.error('データ取得に失敗しました:', error);
+        if (error.response && error.response.status === 401) {
+          alert('セッションの有効期限が切れました。再度ログインしてください。');
+          localStorage.removeItem('token');
+          router.push('/');
+        } else {
+          console.error('データ取得に失敗しました:', error);
+        }
       }
     };
 
@@ -68,7 +74,13 @@ const Dashboard = () => {
       setTodos([...todos, response.data]);
       setNewTodoTitle('');
     } catch (error) {
-      console.error('Todoの追加に失敗しました:', error);
+      if (error.response && error.response.status === 401) {
+        alert('セッションの有効期限が切れました。再度ログインしてください。');
+        localStorage.removeItem('token');
+        router.push('/');
+      } else {
+        console.error('Todoの追加に失敗しました:', error);
+      }
     }
   };
 
@@ -82,7 +94,13 @@ const Dashboard = () => {
       });
       setTodos(todos.filter((todo) => todo.id !== id));
     } catch (error) {
-      console.error('Todoの削除に失敗しました:', error);
+      if (error.response && error.response.status === 401) {
+        alert('セッションの有効期限が切れました。再度ログインしてください。');
+        localStorage.removeItem('token');
+        router.push('/');
+      } else {
+        console.error('Todoの削除に失敗しました:', error);
+      }
     }
   };
 
@@ -99,7 +117,13 @@ const Dashboard = () => {
         }
       );
     } catch (error) {
-      console.error('Todoの更新に失敗しました:', error);
+      if (error.response && error.response.status === 401) {
+        alert('セッションの有効期限が切れました。再度ログインしてください。');
+        localStorage.removeItem('token');
+        router.push('/');
+      } else {
+        console.error('Todoの更新に失敗しました:', error);
+      }
     }
   };
 
