@@ -8,6 +8,17 @@ const Dashboard = () => {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const router = useRouter();
 
+  // 共通のエラーハンドリング関数
+  const handleError = (error) => {
+    if (error.response && error.response.status === 401) {
+      alert('セッションの有効期限が切れました。再度ログインしてください。');
+      localStorage.removeItem('token');
+      router.push('/');
+    } else {
+      console.error('エラーが発生しました:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -26,13 +37,7 @@ const Dashboard = () => {
         });
         setTodos(todosResponse.data);
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          alert('セッションの有効期限が切れました。再度ログインしてください。');
-          localStorage.removeItem('token');
-          router.push('/');
-        } else {
-          console.error('データ取得に失敗しました:', error);
-        }
+        handleError(error);
       }
     };
 
@@ -54,7 +59,7 @@ const Dashboard = () => {
       localStorage.removeItem('token');
       router.push('/');
     } catch (error) {
-      console.error('ログアウトに失敗しました:', error);
+      handleError(error);
     }
   };
 
@@ -74,13 +79,7 @@ const Dashboard = () => {
       setTodos([...todos, response.data]);
       setNewTodoTitle('');
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert('セッションの有効期限が切れました。再度ログインしてください。');
-        localStorage.removeItem('token');
-        router.push('/');
-      } else {
-        console.error('Todoの追加に失敗しました:', error);
-      }
+      handleError(error);
     }
   };
 
@@ -94,13 +93,7 @@ const Dashboard = () => {
       });
       setTodos(todos.filter((todo) => todo.id !== id));
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert('セッションの有効期限が切れました。再度ログインしてください。');
-        localStorage.removeItem('token');
-        router.push('/');
-      } else {
-        console.error('Todoの削除に失敗しました:', error);
-      }
+      handleError(error);
     }
   };
 
@@ -117,13 +110,7 @@ const Dashboard = () => {
         }
       );
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert('セッションの有効期限が切れました。再度ログインしてください。');
-        localStorage.removeItem('token');
-        router.push('/');
-      } else {
-        console.error('Todoの更新に失敗しました:', error);
-      }
+      handleError(error);
     }
   };
 
