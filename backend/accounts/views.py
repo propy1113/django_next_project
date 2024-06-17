@@ -7,16 +7,23 @@ from rest_framework.response import Response    #type: ignore
 from django.contrib.auth.models import User  #type: ignore
 from rest_framework.serializers import ModelSerializer  #type: ignore
 from rest_framework.views import APIView    #type: ignore
+import logging
+
+logger = logging.getLogger(__name__)
 
 class LoginView(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        return super(LoginView, self).post(request, format=None)
+        logger.info('LoginViewが呼び出されました')
+        try:
+            serializer = AuthTokenSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data['user']
+            login(request, user)
+            return super(LoginView, self).post(request, format=None)
+        except Exception as e:
+            logger.error('ログインに失敗しました: %s', e)
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
