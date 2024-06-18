@@ -142,7 +142,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = {
-    
     'version': 1,                       # スキーマバージョンは1固定
     'disable_existing_loggers': False,  # すでに作成されているロガーを無効化しないための設定
     'formatters': {
