@@ -142,35 +142,69 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
+    
+    'version': 1,                       # スキーマバージョンは1固定
+    'disable_existing_loggers': False,  # すでに作成されているロガーを無効化しないための設定
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+        'verbose': {                    # 詳細ログの書式
+            'format': '{levelname} {asctime} {module} {lineno} {message}',
             'style': '{',
         },
-        'simple': {
+        'simple': {                     # 簡易ログの書式
             'format': '{levelname} {message}',
             'style': '{',
         },
     },
-    'handlers': {
-        'console': {
+    'handlers': {                       # ハンドラ
+        'console': {                    # コンソール出力用のハンドラ
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'file': {
+        'file': {                       # ファイル出力用のハンドラ
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'debug.log',
+            'filename': './logs/debug.log',
+            'formatter': 'verbose'
+        },
+        'root_file': {                   # ファイル出力用のハンドラ
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': './logs/root.log',
+            'formatter': 'verbose'
+        },
+        'accounts_file': {                   # ファイル出力用のハンドラ
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './logs/accounts.log',
+            'formatter': 'verbose'
+        },
+        'notes_file': {                   # ファイル出力用のハンドラ
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './logs/notes.log',
             'formatter': 'verbose'
         },
     },
-    'loggers': {
-        'django': {
+    'loggers': {                        # ロガー
+        '': {                           # ルートロガー
+            'handlers': ['root_file'],
+            'level': 'DEBUG',
+            'propagate': True,  
+        },
+        'django': {                     # djangoフレームワーク用のロガー
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
+            'propagate': True,
+        },
+        'accounts': {                   # accountsロガー
+            'handlers': ['accounts_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'notes': {                   # notesロガー
+            'handlers': ['notes_file'],
+            'level': 'INFO',
             'propagate': True,
         },
     },
