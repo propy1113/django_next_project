@@ -5,7 +5,29 @@ from .models import Todo
 from .serializers import TodoSerializer
 import logging
 
+#フロントのロギング用
+# from django.http import JsonResponse    #type: ignore
+# from django.views.decorators.csrf import csrf_exempt    #type: ignore
+# import json 
+
 logger = logging.getLogger(__name__)
+
+# フロントから受け取ったログ情報をファイルに書き込む
+# def log_to_file(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             log_message = data.get('message', '')
+            
+#             # ログをファイルに書き込む
+#             with open('logs/front.log', 'a') as f:
+#                 f.write(log_message + '\n')
+                
+#             return JsonResponse({'status': 'success', 'message': 'Log recorded successfully'})
+#         except json.JSONDecodeError:
+#             return JsonResponse({'status': 'error', 'message': 'Invalid JSON format'}, status=400)
+#     else:
+#         return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed'}, status=405)
 
 
 class TodoListCreateAPI(generics.ListCreateAPIView):
