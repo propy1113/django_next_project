@@ -133,7 +133,7 @@ function MyApp({ Component, pageProps }) {
 export default MyApp;
 ```
 
-### ログのカスタマイズ ファイルにログを保存する
+### ログのカスタマイズ ファイルにログを保存する　※Node.js用（ブラウザ側で使用することはできない）
 ```
 // frontend/pino.js
 const pino = require('pino');
@@ -156,7 +156,7 @@ module.exports = logger;
 mkdir frontend/logs
 ```
 
-### pino.jsファイルを更新して、ログをファイルに保存するように設定します。
+### pino.jsファイルを更新して、ログをファイルに保存するように設定します。　※Node.js用（ブラウザ側で使用することはできない）
 frontend/pino.jsファイルを以下の内容に更新します。
 ```
 // frontend/pino.js
@@ -174,19 +174,46 @@ const logger = pino(
 module.exports = logger;
 ```
 
-### ログの使用 pages/_app.jsを開き、Pinoのロガーをインポートし、使用します。
-ログの使用方法は前述の通りですが、再度確認します。例えば、pages/_app.jsでの使用例です。
+### Pinoのブラウザ向け設定
+frontend/pino.jsファイルを以下の内容に更新します。
 ```
-// frontend/pages/_app.js
-import '../styles/globals.css';
-import logger from '../pino';
+const pino = require('pino');
+import axios from 'axios';
 
-function MyApp({ Component, pageProps }) {
-  logger.info('Rendering page', { page: Component.name });
-  return <Component {...pageProps} />;
-}
+const fetch = async (obj) => {
+  const response = await axios.post('http://0.0.0.0:8000/api/logs/', obj);
+};
 
-export default MyApp;
+// ブラウザ向け設定
+const logger = pino({
+  level: 'info', // ログのレベルを設定 (例: info, error, warn)
+  timestamp: pino.stdTimeFunctions.isoTime,
+  browser: {
+    transmit: {
+      send: function (level, logEvent) {
+        // ここでログを送信する処理を実装する
+        console.log(`Sending log to server: ${logEvent.message}`);
+        // サーバーにログを送信する処理を実装する
+        fetch({
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(logEvent),
+        }).catch(error => console.error('Failed to send log to server', error));
+      },
+    },
+    // write: {
+    //   level: 'info', // ローカルに書き込むログのレベルを設定
+    //   timestamp: pino.stdTimeFunctions.isoTime,
+    //   destination: '/logs/app.log', // ローカルに保存するファイルのパス
+    // },
+  },
+});
+
+module.exports = logger;
+
+
 ```
 
 
