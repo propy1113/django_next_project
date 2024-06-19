@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   // 共通のAPIクライアントの作成
   const apiClient = axios.create({
-    baseURL: 'http://0.0.0.0:8000/api',
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   });
 
   // 共通のエラーハンドリング関数

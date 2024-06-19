@@ -120,9 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -140,3 +140,99 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,                       # スキーマバージョンは1固定
+    'disable_existing_loggers': False,  # すでに作成されているロガーを無効化しないための設定
+    'formatters': {
+        'verbose': {                    # 詳細ログの書式
+            'format': '{levelname} {asctime} {module} {lineno} {message}',
+            'style': '{',
+        },
+        'simple': {                     # 簡易ログの書式
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {                       # ハンドラ
+        'console': {                    # コンソール出力用のハンドラ
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {                       # ファイル出力用のハンドラ
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': './logs/debug.log',
+            'formatter': 'verbose'
+        },
+        'root_file': {                   # ファイル出力用のハンドラ
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': './logs/root.log',
+            'formatter': 'verbose'
+        },
+        'accounts_file': {                   # ファイル出力用のハンドラ
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './logs/accounts.log',
+            'formatter': 'verbose'
+        },
+        'notes_file': {                   # ファイル出力用のハンドラ
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './logs/notes.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {                        # ロガー
+        '': {                           # ルートロガー
+            'handlers': ['root_file'],
+            'level': 'DEBUG',
+            'propagate': True,  
+        },
+        'django': {                     # djangoフレームワーク用のロガー
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'accounts': {                   # accountsロガー
+            'handlers': ['accounts_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'notes': {                   # notesロガー
+            'handlers': ['notes_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+##Geminiで生成したLOGGING
+"""
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'api_logs.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+"""

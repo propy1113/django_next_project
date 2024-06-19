@@ -219,3 +219,4 @@ module.exports = logger;
 
 # その他メモ
 loggingブランチ作成&コミットプッシュ
+loggingブランチ作成&コミットプッシュ2
