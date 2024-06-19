@@ -20,7 +20,10 @@ Djangoの管理画面のユーザ情報
     #npm install axios
     npm install -D tailwindcss
     npx tailwindcss init -p
+    npm install pino pino-pretty        #ロギング用ライブラリ
 
+
+    
 settigns.pyの設定
 ```
 ALLOWED_HOSTS = [0.0.0.0]
@@ -94,6 +97,96 @@ module.exports = {
   },
   plugins: [],
 }
+```
+
+
+## pinoの設定
+
+### pino.jsファイルをfrontendディレクトリに作成します。
+```
+// frontend/pino.js
+const pino = require('pino');
+const pretty = require('pino-pretty');
+
+const logger = pino(
+  {
+    level: 'info',
+    prettyPrint: { colorize: true },
+  },
+  pretty()
+);
+
+module.exports = logger;
+```
+
+### pages/_app.jsを開き、Pinoのロガーをインポートし、使用する方法です。
+```
+// frontend/pages/_app.js
+import '../styles/globals.css';
+import logger from '../pino';
+
+function MyApp({ Component, pageProps }) {
+  logger.info('Rendering page', { page: Component.name });
+  return <Component {...pageProps} />;
+}
+
+export default MyApp;
+```
+
+### ログのカスタマイズ ファイルにログを保存する
+```
+// frontend/pino.js
+const pino = require('pino');
+const pretty = require('pino-pretty');
+const path = require('path');
+const logFilePath = path.join(__dirname, 'logs', 'app.log');
+
+const logger = pino(
+  {
+    level: 'info',
+  },
+  pino.destination(logFilePath)
+);
+
+module.exports = logger;
+```
+
+### frontendディレクトリにlogsディレクトリを作成します。
+```
+mkdir frontend/logs
+```
+
+### pino.jsファイルを更新して、ログをファイルに保存するように設定します。
+frontend/pino.jsファイルを以下の内容に更新します。
+```
+// frontend/pino.js
+const pino = require('pino');
+const path = require('path');
+const logFilePath = path.join(__dirname, 'logs', 'app.log');
+
+const logger = pino(
+  {
+    level: 'info',
+  },
+  pino.destination(logFilePath)
+);
+
+module.exports = logger;
+```
+
+### ログの使用 pages/_app.jsを開き、Pinoのロガーをインポートし、使用します。
+ログの使用方法は前述の通りですが、再度確認します。例えば、pages/_app.jsでの使用例です。
+```
+// frontend/pages/_app.js
+import '../styles/globals.css';
+import logger from '../pino';
+
+function MyApp({ Component, pageProps }) {
+  logger.info('Rendering page', { page: Component.name });
+  return <Component {...pageProps} />;
+}
+
+export default MyApp;
 ```
 
 
