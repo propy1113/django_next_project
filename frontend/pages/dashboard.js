@@ -4,6 +4,7 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [todos, setTodos] = useState([]);
   const [newTodoTitle, setNewTodoTitle] = useState('');
@@ -123,7 +124,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
+      <Sidebar isVisible={isSidebarVisible} toggleSidebar={() => setSidebarVisible(!isSidebarVisible)} />
       <div className="flex-grow container mx-auto ml-64">
         <header className="flex justify-between items-center py-4">
           <h1 className="text-2xl font-bold">ダッシュボード</h1>
