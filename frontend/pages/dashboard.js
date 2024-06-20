@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
   const [username, setUsername] = useState('');
@@ -124,7 +124,7 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-grow container mx-auto">
+      <div className="flex-grow container mx-auto ml-64">
         <header className="flex justify-between items-center py-4">
           <h1 className="text-2xl font-bold">ダッシュボード</h1>
           <button onClick={handleLogout} className="bg-red-500 text-white p-2">
