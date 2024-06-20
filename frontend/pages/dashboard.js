@@ -125,30 +125,30 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar isVisible={isSidebarVisible} toggleSidebar={() => setSidebarVisible(!isSidebarVisible)} />
-      <div className="flex-grow container mx-auto ml-64">
+      <div className="flex-grow container mx-auto ml-72">
         <header className="flex justify-between items-center py-4">
           <h1 className="text-2xl font-bold">ダッシュボード</h1>
-          <button onClick={handleLogout} className="bg-red-500 text-white p-2">
+          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">
             ログアウト
           </button>
         </header>
         <main>
-          <h2>ようこそ、{username}さん</h2>
-          <div className="flex justify-end items-center py-4">
+          <h2 className="text-lg mb-4">ようこそ、<span className="font-bold">{username}</span>さん</h2>
+          <div className="flex justify-between items-center py-4">
             <input
               type="text"
               value={newTodoTitle}
               onChange={(e) => setNewTodoTitle(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2 flex-grow mr-2"
               placeholder="新しいTodoのタイトル"
             />
-            <button onClick={handleAddTodo} className="bg-green-500 text-white p-2">
+            <button onClick={handleAddTodo} className="bg-green-500 text-white px-4 py-2 rounded">
               追加
             </button>
           </div>
           <div className="flex flex-wrap">
             {todos.map((todo, index) => (
-              <div key={todo.id} className="border rounded p-4 m-2 w-1/4">
+              <div key={todo.id} className="border rounded-lg shadow-md p-4 m-2 w-1/4">
                 <input
                   type="text"
                   value={todo.title || ''}
@@ -170,11 +170,11 @@ const Dashboard = () => {
                     setTodos(updatedTodos);
                   }}
                   onBlur={() => handleUpdateTodo(todo.id, todo.title, todo.text)}
-                  className="w-full border mt-2"
+                  className="w-full border mt-2 h-40"
                 />
                 <button
                   onClick={() => handleDeleteTodo(todo.id)}
-                  className="bg-red-500 text-white p-2 mt-2"
+                  className="bg-red-500 text-white px-4 py-2 mt-2 rounded"
                 >
                   削除
                 </button>
