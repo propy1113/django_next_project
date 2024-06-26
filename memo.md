@@ -221,3 +221,4 @@ module.exports = logger;
 loggingブランチ作成&コミットプッシュ
 loggingブランチ作成&コミットプッシュ2
 git ユーザ名　変更
+git config email, usernameを変更
