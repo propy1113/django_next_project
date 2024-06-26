@@ -125,7 +125,7 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <Sidebar isVisible={isSidebarVisible} toggleSidebar={() => setSidebarVisible(!isSidebarVisible)} />
-      <div className="flex-grow container mx-auto ml-72">
+      <div className="flex-grow container mx-auto ml-72 mr-8">
         <header className="flex justify-between items-center py-4">
           <h1 className="text-2xl font-bold">ダッシュボード</h1>
           <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">
