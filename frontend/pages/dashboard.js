@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [todos, setTodos] = useState([]);
   const [newTodoTitle, setNewTodoTitle] = useState('');
@@ -121,63 +123,66 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <header className="flex justify-between items-center py-4">
-        <h1 className="text-2xl font-bold">ダッシュボード</h1>
-        <button onClick={handleLogout} className="bg-red-500 text-white p-2">
-          ログアウト
-        </button>
-      </header>
-      <main>
-        <h2>ようこそ、{username}さん</h2>
-        <div className="flex justify-end items-center py-4">
-          <input
-            type="text"
-            value={newTodoTitle}
-            onChange={(e) => setNewTodoTitle(e.target.value)}
-            className="border p-2 mr-2"
-            placeholder="新しいTodoのタイトル"
-          />
-          <button onClick={handleAddTodo} className="bg-green-500 text-white p-2">
-            追加
+    <div className="flex">
+      <Sidebar isVisible={isSidebarVisible} toggleSidebar={() => setSidebarVisible(!isSidebarVisible)} />
+      <div className="flex-grow container mx-auto ml-72 mr-8">
+        <header className="flex justify-between items-center py-4">
+          <h1 className="text-2xl font-bold">ダッシュボード</h1>
+          <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">
+            ログアウト
           </button>
-        </div>
-        <div className="flex flex-wrap">
-          {todos.map((todo, index) => (
-            <div key={todo.id} className="border rounded p-4 m-2 w-1/4">
-              <input
-                type="text"
-                value={todo.title || ''}
-                onChange={(e) => {
-                  const updatedTodos = todos.map((t) =>
-                    t.id === todo.id ? { ...t, title: e.target.value } : t
-                  );
-                  setTodos(updatedTodos);
-                }}
-                onBlur={() => handleUpdateTodo(todo.id, todo.title, todo.text)}
-                className="border-b w-full"
-              />
-              <textarea
-                value={todo.text || ''}
-                onChange={(e) => {
-                  const updatedTodos = todos.map((t) =>
-                    t.id === todo.id ? { ...t, text: e.target.value } : t
-                  );
-                  setTodos(updatedTodos);
-                }}
-                onBlur={() => handleUpdateTodo(todo.id, todo.title, todo.text)}
-                className="w-full border mt-2"
-              />
-              <button
-                onClick={() => handleDeleteTodo(todo.id)}
-                className="bg-red-500 text-white p-2 mt-2"
-              >
-                削除
-              </button>
-            </div>
-          ))}
-        </div>
-      </main>
+        </header>
+        <main>
+          <h2 className="text-lg mb-4">ようこそ、<span className="font-bold">{username}</span>さん</h2>
+          <div className="flex justify-between items-center py-4">
+            <input
+              type="text"
+              value={newTodoTitle}
+              onChange={(e) => setNewTodoTitle(e.target.value)}
+              className="border p-2 flex-grow mr-2"
+              placeholder="新しいTodoのタイトル"
+            />
+            <button onClick={handleAddTodo} className="bg-green-500 text-white px-4 py-2 rounded">
+              追加
+            </button>
+          </div>
+          <div className="flex flex-wrap">
+            {todos.map((todo, index) => (
+              <div key={todo.id} className="border rounded-lg shadow-md p-4 m-2 w-1/4">
+                <input
+                  type="text"
+                  value={todo.title || ''}
+                  onChange={(e) => {
+                    const updatedTodos = todos.map((t) =>
+                      t.id === todo.id ? { ...t, title: e.target.value } : t
+                    );
+                    setTodos(updatedTodos);
+                  }}
+                  onBlur={() => handleUpdateTodo(todo.id, todo.title, todo.text)}
+                  className="border-b w-full"
+                />
+                <textarea
+                  value={todo.text || ''}
+                  onChange={(e) => {
+                    const updatedTodos = todos.map((t) =>
+                      t.id === todo.id ? { ...t, text: e.target.value } : t
+                    );
+                    setTodos(updatedTodos);
+                  }}
+                  onBlur={() => handleUpdateTodo(todo.id, todo.title, todo.text)}
+                  className="w-full border mt-2 h-40"
+                />
+                <button
+                  onClick={() => handleDeleteTodo(todo.id)}
+                  className="bg-red-500 text-white px-4 py-2 mt-2 rounded"
+                >
+                  削除
+                </button>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
