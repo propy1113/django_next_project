@@ -31,7 +31,7 @@ export default function Home() {
     e.preventDefault();  // デフォルトの送信動作を無効
     try {
       // サーバーにログインデータを送信
-      const response = await axios.post('http://0.0.0.0:8000/api/login/', formData);
+      const response = await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL+'/login/', formData);
       localStorage.setItem('token', response.data.token);  // トークンを保存
       router.push('/dashboard');  // ダッシュボードへ移動
     } catch (error) {

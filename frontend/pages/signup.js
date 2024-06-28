@@ -24,9 +24,9 @@ export default function Signup() {
     e.preventDefault();
     try {
       // アカウント作成
-      await axios.post('http://0.0.0.0:8000/api/register/', formData);
+      await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL+'/register/', formData);
       // アカウント作成成功後にログイン
-      const response = await axios.post('http://0.0.0.0:8000/api/login/', {
+      const response = await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL+'/login/', {
         username: formData.username,
         password: formData.password,
       });
